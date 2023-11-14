@@ -24,5 +24,10 @@ namespace game_forest_test
         {
             InitializeComponent();
         }
+
+        private void StartNewGame(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Play button pressed");
+        }
     }
 }

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using game_forest_test.Scenes;
+using game_forest_test.Views;
 
 namespace game_forest_test
 {
@@ -20,14 +22,16 @@ namespace game_forest_test
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static SceneManager _sceneManager;
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void StartNewGame(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("Play button pressed");
+            
+            Frame mainFrame = (Frame)FindName("MainFrame");
+            
+            _sceneManager = new SceneManager(mainFrame);
+            
+            SceneManager.LoadScene(new MainMenu());
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿<Page x:Class="game_forest_test.Scenes.MainMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:game_forest_test.Scenes"
+      mc:Ignorable="d"
+      Title="MainMenu" 
+      Height="{Binding RelativeSource={RelativeSource FindAncestor, 
+               AncestorType={x:Type Frame}},Path=ActualHeight}" 
+      Width="{Binding RelativeSource={RelativeSource FindAncestor, 
+               AncestorType={x:Type Frame}},Path=ActualWidth}"
+      ShowsNavigationUI="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Row="2" Grid.Column="1" Content="Play" FontSize="30" Click="OnPlayButtonPressed"></Button>
+    </Grid>
+</Page>

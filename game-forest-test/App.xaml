@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:game_forest_test"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

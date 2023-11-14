@@ -6,19 +6,5 @@
         xmlns:local="clr-namespace:game_forest_test"
         mc:Ignorable="d"
         Title="Merge-2 Sample" Height="450" Width="800">
-    <Grid ShowGridLines="False">
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="1" Grid.Row="2" Content="Play"  FontSize="40" Click="StartNewGame"/>
-    </Grid>
+    <Frame Name="MainFrame"></Frame>
 </Window>

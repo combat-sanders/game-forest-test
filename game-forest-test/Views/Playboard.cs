@@ -12,15 +12,22 @@ public class Playboard
     /// Unit element of grid
     /// </summary>
     private Rectangle _cell { get; set; }
+    private Grid _grid { get; set; }
     
     public Playboard(Grid grid, Rectangle cell)
     {
         _cell = cell;
+        _grid = grid;
         
+        CreateEmptyPlayboard();
+    }
+    
+    void CreateEmptyPlayboard()
+    {
         for (int i = 0; i < 8; i++)
         {
-            grid.RowDefinitions.Add(new RowDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            _grid.RowDefinitions.Add(new RowDefinition());
+            _grid.ColumnDefinitions.Add(new ColumnDefinition());
         }
         for (int row = 0; row < 8; row++)
         {
@@ -34,7 +41,7 @@ public class Playboard
                 Grid.SetRow(rectangle, row);
                 Grid.SetColumn(rectangle, column);
                 
-                grid.Children.Add(rectangle);
+                _grid.Children.Add(rectangle);
             }
         }
     }

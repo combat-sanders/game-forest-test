@@ -22,5 +22,5 @@ public class SceneManager
     /// </summary>
     /// <param name="scene">The Page element, that contains scene</param>
     /// <returns>true if navigation is not canceled; otherwise, false</returns>
-    public static bool LoadScene(Page scene) => _mainFrame.Navigate(scene);
+    public static void LoadScene(Page scene) => _mainFrame.Navigate(scene);
 }

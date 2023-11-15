@@ -1,4 +1,4 @@
-﻿<Page x:Class="game_forest_test.Scenes.PlayField"
+﻿<Page x:Class="game_forest_test.Scenes.Game"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,5 +26,11 @@
                    VerticalAlignment="Center" Text="X" TextAlignment="Center" FontSize="35">
             </TextBlock>
         </Button>
+        <Grid Name="Grid"
+              MinHeight="200"
+              MinWidth="200"
+              Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+              Margin="60">
+        </Grid>
     </Grid>
 </Page>

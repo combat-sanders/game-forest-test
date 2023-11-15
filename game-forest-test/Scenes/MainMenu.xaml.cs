@@ -20,6 +20,6 @@ public partial class MainMenu : Page
     /// <param name="e">routed event args</param>
     private void OnPlayButtonPressed(object sender, RoutedEventArgs e)
     {
-        SceneManager.LoadScene(new PlayField());
+        SceneManager.LoadScene(new Game());
     }
 }

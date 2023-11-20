@@ -31,7 +31,7 @@ namespace game_forest_test
             
             _sceneManager = new SceneManager(mainFrame);
             
-            SceneManager.LoadScene(new MainMenu());
+            SceneManager.LoadScene(new MainMenuScene());
         }
     }
 }

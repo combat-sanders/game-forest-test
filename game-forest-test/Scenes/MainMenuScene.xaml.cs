@@ -6,9 +6,9 @@ namespace game_forest_test.Scenes;
 /// <summary>
 /// Scene with Main Menu
 /// </summary>
-public partial class MainMenu : Page
+public partial class MainMenuScene : Page
 {
-    public MainMenu()
+    public MainMenuScene()
     {
         InitializeComponent();
     }
@@ -20,6 +20,6 @@ public partial class MainMenu : Page
     /// <param name="e">routed event args</param>
     private void OnPlayButtonPressed(object sender, RoutedEventArgs e)
     {
-        SceneManager.LoadScene(new Game());
+        SceneManager.LoadScene(new GameScene());
     }
 }

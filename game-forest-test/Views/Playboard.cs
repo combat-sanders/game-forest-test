@@ -12,6 +12,10 @@ public class Playboard
     /// Unit element of grid
     /// </summary>
     private Rectangle _cell { get; set; }
+    
+    /// <summary>
+    /// Grid to layout elements
+    /// </summary>
     private Grid _grid { get; set; }
     
     public Playboard(Grid grid, Rectangle cell)

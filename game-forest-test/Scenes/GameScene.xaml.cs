@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using game_forest_test.Models;
@@ -12,22 +13,41 @@ namespace game_forest_test.Scenes;
 /// </summary>
 public partial class GameScene : Page
 {
+    /// <summary>
+    /// Contains playbord data and game methods
+    /// </summary>
     private PlayboardModel _playboardModel;
-    private Grid? _grid;
+    
+    /// <summary>
+    /// Contains appearence and user actions handlers
+    /// </summary>
+    private PlayboardView _playboardView;
+    
+    /// <summary>
+    /// Container, that will be parent of playboard
+    /// </summary>
+    private Canvas _playboardParent;
     public GameScene()
     {
         InitializeComponent();
-
-        _playboardModel = new PlayboardModel();
         
-        _grid = (Grid)FindName("Grid");
+        // Find static xaml container
+        _playboardParent = (Canvas)FindName("PlayboardContainer");
         
-        Rectangle cell = new Rectangle();
+        // Init general actors
+        _playboardModel = new PlayboardModel(8, 8);
+        _playboardView = new PlayboardView(_playboardParent, 8, 8);
+        Console.WriteLine(_playboardParent.Children.Count);
         
-        cell.Stroke = Brushes.Black;
-        cell.StrokeThickness = 1;
+        // sync state between model and view
+        PlayboardController.Sync(_playboardModel, _playboardView);
     }
 
+    /// <summary>
+    /// Exit button handler
+    /// </summary>
+    /// <param name="sender"> sender</param>
+    /// <param name="e">event args</param>
     private void OnExitButtonPressed(object sender, RoutedEventArgs e)
     {
         SceneManager.LoadScene(new MainMenuScene());

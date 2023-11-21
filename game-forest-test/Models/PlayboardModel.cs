@@ -12,20 +12,12 @@ public class PlayboardModel
     /// <summary>
     /// Container, that contains data about cells.
     /// </summary>
-    public PlayboardModelCell[,] Data
-    {
-        get
-        {
-            if (Data == null)
-            {
-                InitPlayboard(8,8);
-            }
-            return Data;
-        }
-        set {}
-    }
+    public PlayboardModelCell[,] Data { get; set; }
 
-    public PlayboardModel() { }
+    public PlayboardModel(int rows, int columns)
+    {
+        InitPlayboard(rows, columns);
+    }
     
     /// <summary>
     /// 

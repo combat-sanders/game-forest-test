@@ -7,30 +7,41 @@
       mc:Ignorable="d"
       Title="PlayField" 
       Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-               AncestorType={x:Type Frame}},Path=ActualHeight}" 
+              AncestorType={x:Type Frame}},Path=ActualHeight}" 
       Width="{Binding RelativeSource={RelativeSource FindAncestor, 
-               AncestorType={x:Type Frame}},Path=ActualWidth}"
+              AncestorType={x:Type Frame}},Path=ActualWidth}"
       ShowsNavigationUI="False">
     <Grid>
+        <Viewbox 
+            Height="200"
+            Width="200"
+            Stretch="Fill"
+            StretchDirection="Both"
+            Visibility="Visible">
+            <Canvas 
+                Visibility="Visible"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Name="PlayboardContainer"
+                ZIndex="1000"
+                Background="White"
+                Width="200"
+                Height="200">
+            </Canvas>
+        </Viewbox>
         <Button Name="Exit"
                 Width="50" Height="50"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
                 Click="OnExitButtonPressed">
             <TextBlock
-                   Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-               AncestorType={x:Type Button}},Path=ActualHeight}" 
-                   Width="{Binding RelativeSource={RelativeSource FindAncestor, 
-               AncestorType={x:Type Button}},Path=ActualWidth}" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" Text="X" TextAlignment="Center" FontSize="35">
+                Height="{Binding RelativeSource={RelativeSource FindAncestor, 
+              AncestorType={x:Type Button}},Path=ActualHeight}" 
+                Width="{Binding RelativeSource={RelativeSource FindAncestor, 
+              AncestorType={x:Type Button}},Path=ActualWidth}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" Text="X" TextAlignment="Center" FontSize="35">
             </TextBlock>
-        </Button>
-        <Grid Name="Grid"
-              MinHeight="200"
-              MinWidth="200"
-              Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-              Margin="60">
-        </Grid>
+        </Button> 
     </Grid>
 </Page>

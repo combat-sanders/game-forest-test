@@ -12,6 +12,7 @@ public class PlayboardModelCell
     {
         Color = color;
         Level = level;
+        State = color == Colors.None && Level == Levels.None ? States.Empty : States.Busy;
     }
 
     /// <summary>
@@ -43,16 +44,16 @@ public class PlayboardModelCell
         Third = 3,
         Fourth = 4,
     }
-    
-    public States State { get; set; }
+
+    public States State { get; set; } = States.Empty;
 
     /// <summary>
     /// Property defines the color of the cell
     /// </summary>
-    public Colors Color 
+    public Colors Color
     {
-        get => (State == States.Empty) ? Colors.None : Color;
-        set => Color = (State == States.Empty) ? Colors.None : value;
+        get;
+        set;
     }
     
     /// <summary>
@@ -60,8 +61,8 @@ public class PlayboardModelCell
     /// </summary>
     public Levels Level
     {
-        get => (State == States.Empty) ? Levels.None : Level;
-        set => Level = (State == States.Empty) ? Levels.None : value;
+        get;
+        set;
     }
 
     /// <summary>

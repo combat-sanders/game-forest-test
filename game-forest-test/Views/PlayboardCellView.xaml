@@ -13,7 +13,11 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Rectangle Name="Background"></Rectangle>
+        <Rectangle 
+            Name="Background"
+            Fill="Transparent"
+            Stroke="Black"
+            StrokeThickness="1"></Rectangle>
         <Viewbox Grid.Row="0" Grid.Column="0">
            <TextBlock
                Name="Text"

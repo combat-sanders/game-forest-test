@@ -22,7 +22,7 @@ public partial class PlayboardCellView : UserControl
     public int Level
     {
         get => Level;
-        set => _text.Text = value.ToString();
+        set => _text.Text = value != 0 ? value.ToString() : "";
     }
 
     /// <summary>
@@ -35,10 +35,12 @@ public partial class PlayboardCellView : UserControl
     /// </summary>
     private TextBlock _text;
     
-    public PlayboardCellView()
+    public PlayboardCellView(int level = 0, Brush color = null)
     {
         InitializeComponent();
         _background = (Rectangle)FindName("Background");
         _text = (TextBlock)FindName("Text");
+        Level = level;
+        Color = color;
     }
 }

@@ -37,10 +37,12 @@ public partial class GameScene : Page
         // Init general actors
         _playboardModel = new PlayboardModel(8, 8);
         _playboardView = new PlayboardView(_playboardParent, 8, 8);
-        Console.WriteLine(_playboardParent.Children.Count);
+        
+        // Startup game
+        GameController.InitGame(_playboardModel, 8);
         
         // sync state between model and view
-        PlayboardController.Sync(_playboardModel, _playboardView);
+        PlayboardController.SyncWithModel(_playboardModel, _playboardView);
     }
 
     /// <summary>

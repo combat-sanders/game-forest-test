@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using game_forest_test.Helpers;
 
 namespace game_forest_test.Models;
@@ -13,10 +14,15 @@ public class PlayboardModel
     /// Container, that contains data about cells.
     /// </summary>
     public PlayboardModelCell[,] Data { get; set; }
+    
+    public int Rows { get; private set; }
+    public int Columns { get; private set; }
 
     public PlayboardModel(int rows, int columns)
     {
         InitPlayboard(rows, columns);
+        Rows = rows;
+        Columns = columns;
     }
     
     /// <summary>
@@ -71,7 +77,7 @@ public class PlayboardModel
     /// Returns list of empty cells indexes
     /// </summary>
     /// <returns>indexes of empty cells</returns>
-    private List<Tuple<int, int>> GetEmptyCells()
+    public List<Tuple<int, int>> GetEmptyCells()
     {
         var emptyCells = new List<Tuple<int, int>>();
 
@@ -93,10 +99,10 @@ public class PlayboardModel
     /// Spawns element on random position, depending cell properties
     /// </summary>
     /// <param name="emittedCell">cell, that requests spawn</param>
-    public void SpawnElement(PlayboardModelCell emittedCell)
+    public void SpawnElement(PlayboardModelCell? emittedCell = null)
     {
         // case of cell, that don't allow generation
-        if (emittedCell.State == PlayboardModelCell.States.Empty &&
+        if (emittedCell?.State == PlayboardModelCell.States.Empty &&
             !emittedCell.AllowGeneration())
         {
             return;
@@ -114,7 +120,7 @@ public class PlayboardModel
         Random random = new Random();
         
         // determine spawn position
-        var index = random.Next(0, emptyCells.Count);
+        var index = random.Next(0, emptyCells.Count - 1);
         var cellPosition = emptyCells[index];
 
         // determine color for cell
@@ -135,6 +141,11 @@ public class PlayboardModel
         // change element to target properties (spawn, in view
         Data[cellPosition.Item1, cellPosition.Item2].Color = cellColor;
         Data[cellPosition.Item1, cellPosition.Item2].Level = PlayboardModelCell.Levels.First;
+    }
+
+    public void SpawnElement(int xIndex, int yIndex, PlayboardModelCell.Colors color, PlayboardModelCell.Levels level)
+    {
+        Data[xIndex, yIndex] = new PlayboardModelCell(color, level);
     }
 
     /// <summary>

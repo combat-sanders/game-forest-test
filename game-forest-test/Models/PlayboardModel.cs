@@ -13,16 +13,15 @@ public class PlayboardModel
     /// <summary>
     /// Container, that contains data about cells.
     /// </summary>
-    public PlayboardModelCell[,] Data { get; set; }
     
-    public int Rows { get; private set; }
-    public int Columns { get; private set; }
+    public Dictionary<Vector2, PlayboardModelCell> Data { get; set; }
+    
+    public int Size { get; private set; }
 
-    public PlayboardModel(int rows, int columns)
+    public PlayboardModel(int size)
     {
-        InitPlayboard(rows, columns);
-        Rows = rows;
-        Columns = columns;
+        InitPlayboard(size);
+        Size = size;
     }
     
     /// <summary>
@@ -33,41 +32,41 @@ public class PlayboardModel
     /// <param name="targetX">first coordinate of target cell</param>
     /// <param name="targetY">first coordinate of target cell</param>
     /// <returns></returns>
-    public bool MoveCell(int sourceX, int sourceY, int targetX, int targetY)
+    public bool MoveCell(Vector2 source, Vector2 target)
     {
-        if (Helper.InRange(sourceX, 0, Data.GetLength(0)) ||
-            Helper.InRange(sourceY, 0, Data.GetLength(1)) ||
-            Helper.InRange(targetX, 0, Data.GetLength(0)) ||
-            Helper.InRange(targetY, 0, Data.GetLength(1)))
+        if (Helper.InRange(source.X, 0, Size - 1) ||
+            Helper.InRange(source.Y, 0, Size - 1) ||
+            Helper.InRange(target.X, 0, Size - 1) ||
+            Helper.InRange(target.Y, 0, Size - 1))
         {
             return false;
         }
         // if target cell is empty
-        if (Data[targetX, targetY].State == PlayboardModelCell.States.Empty)
+        if (Data[target].State == PlayboardModelCell.States.Empty)
         {
             // just move cell
-            Data[targetX, targetY] = Data[sourceX, sourceY];
+            Data[target] = Data[source];
             // and make source cell empty
-            Data[sourceX, sourceY].State = PlayboardModelCell.States.Empty;
+            Data[source].State = PlayboardModelCell.States.Empty;
         }
 
         // swap cells if color and level are not same or target cell have max level 
-        if (Data[targetX, targetY]?.Color != Data[sourceX, sourceY].Color ||
-            Data[targetX, targetY]?.Level != Data[sourceX, sourceY].Level ||
-            Data[targetX, targetY]?.Level == PlayboardModelCell.MaxLevel)
+        if (Data[target]?.Color != Data[source].Color ||
+            Data[target]?.Level != Data[source].Level ||
+            Data[target]?.Level == PlayboardModelCell.MaxLevel)
         {
-            (Data[sourceX, sourceY], Data[targetX, targetY]) = (Data[targetX, targetY], Data[sourceX, sourceY]);
+            (Data[source], Data[target]) = (Data[target], Data[source]);
         }
 
         // improve level if color and level are same
-        if (Data[targetX, targetY]?.Color == Data[sourceX, sourceY].Color &&
-            Data[targetX, targetY]?.Level == Data[sourceX, sourceY].Level &&
-            Data[sourceX, sourceY].Level != PlayboardModelCell.MaxLevel)
+        if (Data[target]?.Color == Data[source].Color &&
+            Data[target]?.Level == Data[source].Level &&
+            Data[source].Level != PlayboardModelCell.MaxLevel)
         {
             // improve level on target cell
-            Data[targetX, targetY].Level++;
+            Data[target].Level++;
             // make source cell empty
-            Data[sourceX, sourceY].State = PlayboardModelCell.States.Empty;
+            Data[source].State = PlayboardModelCell.States.Empty;
         }
         
         return true;
@@ -77,17 +76,17 @@ public class PlayboardModel
     /// Returns list of empty cells indexes
     /// </summary>
     /// <returns>indexes of empty cells</returns>
-    public List<Tuple<int, int>> GetEmptyCells()
+    public List<Vector2> GetEmptyCells()
     {
-        var emptyCells = new List<Tuple<int, int>>();
+        var emptyCells = new List<Vector2>();
 
-        for (int i = 0; i < Data.GetLength(0); i++)
+        for (int i = 0; i < Size; i++)
         {
-            for (int j = 0; j < Data.GetLength(1); j++)
+            for (int j = 0; j < Size; j++)
             {
-                if (Data[i, j].State == PlayboardModelCell.States.Empty)
+                if (Data[new Vector2(i, j)].State == PlayboardModelCell.States.Empty)
                 {
-                    emptyCells.Add(new Tuple<int, int>(i, j));
+                    emptyCells.Add(new Vector2(i, j));
                 }
             }
         }
@@ -139,13 +138,13 @@ public class PlayboardModel
         };
         
         // change element to target properties (spawn, in view
-        Data[cellPosition.Item1, cellPosition.Item2].Color = cellColor;
-        Data[cellPosition.Item1, cellPosition.Item2].Level = PlayboardModelCell.Levels.First;
+        Data[cellPosition].Color = cellColor;
+        Data[cellPosition].Level = PlayboardModelCell.Levels.First;
     }
 
-    public void SpawnElement(int xIndex, int yIndex, PlayboardModelCell.Colors color, PlayboardModelCell.Levels level)
+    public void SpawnElement(Vector2 position, PlayboardModelCell.Colors color, PlayboardModelCell.Levels level)
     {
-        Data[xIndex, yIndex] = new PlayboardModelCell(color, level);
+        Data[position] = new PlayboardModelCell(color, level);
     }
 
     /// <summary>
@@ -153,15 +152,15 @@ public class PlayboardModel
     /// </summary>
     /// <param name="countOfRows">count of rows</param>
     /// <param name="countOfColumns">count of columns</param>
-    private void InitPlayboard(int countOfRows, int countOfColumns)
+    private void InitPlayboard(int size)
     {
-        Data = new PlayboardModelCell[countOfRows, countOfColumns];
+        Data = new Dictionary<Vector2, PlayboardModelCell>();
 
-        for (int i = 0; i < countOfRows; i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < countOfColumns; j++)
+            for (int j = 0; j < size; j++)
             {
-                Data[i, j] = new PlayboardModelCell();
+                Data[new Vector2(i, j)] = new PlayboardModelCell();
             }
         }
     }

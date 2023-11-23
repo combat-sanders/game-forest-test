@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
 using game_forest_test.Models;
@@ -13,36 +14,35 @@ namespace game_forest_test.Views;
 public class PlayboardView
 {
     private Canvas _playboardContainer;
-    public Rectangle[,] Anchors { get; private set; }
+    public Dictionary<Vector2, Rectangle> Anchors { get; private set; }
     
-    public PlayboardCellView[,] Cells { get; set; }
-    public int Rows { get; private set; } = 0;
-    public int Columns { get; private set; } = 0;
-    public PlayboardView(Canvas playboardContainer, int rows, int columns)
+    public Dictionary<Vector2, PlayboardCellView> Data { get; set; }
+    
+    public int Size { get; private set; } = 0;
+    public PlayboardView(Canvas playboardContainer, int size)
     {
         _playboardContainer = playboardContainer;
-        Rows = rows;
-        Columns = columns;
-        Anchors = new Rectangle[Rows, Columns];
-        Cells = new PlayboardCellView[Rows, Columns];
+        Size = size;
+        Anchors = new Dictionary<Vector2, Rectangle>();
+        Data = new Dictionary<Vector2, PlayboardCellView>();
         InitAnchors();
         InitCells();
     }
 
     private void InitAnchors()
     {
-        for (int i = 0; i < Rows; i++)
+        for (int i = 0; i < Size; i++)
         {
-            for (int j = 0; j < Columns; j++)
+            for (int j = 0; j < Size; j++)
             {
                 Rectangle rectangle = new Rectangle();
                 rectangle.Fill = Brushes.Transparent;
                 rectangle.Stroke = Brushes.Black;
                 rectangle.StrokeThickness = 1;
-                rectangle.Width = _playboardContainer.Width / Columns;
-                rectangle.Height = _playboardContainer.Height / Rows;
+                rectangle.Width = _playboardContainer.Width / Size;
+                rectangle.Height = _playboardContainer.Height / Size;
                 _playboardContainer.Children.Add(rectangle);
-                Anchors[i, j] = rectangle;
+                Anchors[new Vector2(i, j)] = rectangle;
                 Canvas.SetTop(rectangle, i * rectangle.Height);
                 Canvas.SetLeft(rectangle, j * rectangle.Width);
             }
@@ -51,16 +51,17 @@ public class PlayboardView
 
     private void InitCells()
     {
-        for (int i = 0; i < Rows; i++)
+        for (int i = 0; i < Size; i++)
         {
-            for (int j = 0; j < Columns; j++)
+            for (int j = 0; j < Size; j++)
             {
-                Cells[i, j] = new PlayboardCellView();
-                Cells[i, j].Width = _playboardContainer.Width / Columns;
-                Cells[i, j].Height = _playboardContainer.Height / Rows;
-                _playboardContainer.Children.Add(Cells[i, j]);
-                Canvas.SetTop(Cells[i, j], i * Cells[i, j].Height);
-                Canvas.SetLeft(Cells[i, j], j * Cells[i, j].Width);
+                Vector2 position = new Vector2(i, j);
+                Data[position] = new PlayboardCellView();
+                Data[position].Width = _playboardContainer.Width / Size;
+                Data[position].Height = _playboardContainer.Height / Size;
+                _playboardContainer.Children.Add(Data[position]);
+                Canvas.SetTop(Data[position], i * Data[position].Height);
+                Canvas.SetLeft(Data[position], j * Data[position].Width);
             }
         }
     }

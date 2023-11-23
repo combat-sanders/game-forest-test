@@ -35,8 +35,8 @@ public partial class GameScene : Page
         _playboardParent = (Canvas)FindName("PlayboardContainer");
         
         // Init general actors
-        _playboardModel = new PlayboardModel(8, 8);
-        _playboardView = new PlayboardView(_playboardParent, 8, 8);
+        _playboardModel = new PlayboardModel(8);
+        _playboardView = new PlayboardView(_playboardParent, 8);
         
         // Startup game
         GameController.InitGame(_playboardModel, 8);

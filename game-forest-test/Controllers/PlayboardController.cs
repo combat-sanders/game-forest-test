@@ -18,22 +18,15 @@ public static class PlayboardController
     };
     public static void SyncWithModel(PlayboardModel? model, PlayboardView? view)
     {
-        if (model == null || view == null)
-        {
-            return;
-        }
+        if (model == null || view == null) return;
+        if (model.Size != view.Size) return;
 
-        if (model.Rows != view.Rows || model.Columns != view.Columns)
+        for (int i = 0; i < model.Size; i++)
         {
-            return;
-        }
-
-        for (int i = 0; i < model.Rows; i++)
-        {
-            for (int j = 0; j < model.Columns; j++)
+            for (int j = 0; j < model.Size; j++)
             {
-                view.Cells[i, j].Color = _colorAdapter[model.Data[i, j].Color];
-                view.Cells[i, j].Level = Convert.ToInt32(model.Data[i, j].Level);
+                view.Data[new Vector2(i, j)].Color = _colorAdapter[model.Data[new Vector2(i, j)].Color];
+                view.Data[new Vector2(i, j)].Level = Convert.ToInt32(model.Data[new Vector2(i, j)].Level);
             }
         }
     }

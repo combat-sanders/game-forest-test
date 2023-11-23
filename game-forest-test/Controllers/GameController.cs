@@ -15,8 +15,7 @@ public static class GameController
         while (countOfCells > 0)
         {
             int index = random.Next(0, emptyCells.Count - 1);
-            model.SpawnElement(emptyCells[index].Item1,
-                emptyCells[index].Item2,
+            model.SpawnElement(emptyCells[index],
                 PlayboardModelCell.Colors.Blue,
                 PlayboardModelCell.Levels.First);
             emptyCells.Remove(emptyCells[index]);

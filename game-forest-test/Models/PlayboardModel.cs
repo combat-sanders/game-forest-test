@@ -11,11 +11,14 @@ namespace game_forest_test.Models;
 public class PlayboardModel
 {
     /// <summary>
-    /// Container, that contains data about cells.
+    /// Container, that contains data about elements.
     /// </summary>
     
     public Dictionary<Vector2, PlayboardElementModel> Data { get; set; }
     
+    /// <summary>
+    /// Count of rows and columns in grid
+    /// </summary>
     public int Size { get; private set; }
 
     public PlayboardModel(int size)
@@ -25,17 +28,17 @@ public class PlayboardModel
     }
     
     /// <summary>
-    /// 
+    /// Moves element from source to target postion, depending game rules
     /// </summary>
     /// <param name="source">source position</param>
     /// <param name="target">target position</param>
     /// <returns></returns>
-    public bool MoveCell(Vector2 source, Vector2 target)
+    public bool MoveElement(Vector2 source, Vector2 target)
     {
         if (Data[source].State == PlayboardElementModel.States.Empty) return false;
         if (Equals(source, target)) return false;
 
-        // swap cells if color and level are not same or target cell have max level 
+        // swap cells if color and level are not same or target element have max level 
         if (Data[target].Color != Data[source].Color ||
             Data[target].Level != Data[source].Level ||
             Data[target].Level == PlayboardElementModel.MaxLevel ||
@@ -49,9 +52,9 @@ public class PlayboardModel
             Data[target].Level == Data[source].Level &&
             Data[source].Level != PlayboardElementModel.MaxLevel)
         {
-            // improve level on target cell
+            // improve level on target element
             Data[target].Level++;
-            // make source cell empty
+            // make source element empty
             Data[source].State = PlayboardElementModel.States.Empty;
         }
         
@@ -59,9 +62,9 @@ public class PlayboardModel
     }
     
     /// <summary>
-    /// Returns list of empty cells indexes
+    /// Returns list of empty element indexes
     /// </summary>
-    /// <returns>indexes of empty cells</returns>
+    /// <returns>indexes of empty elements</returns>
     public List<Vector2> GetEmptyCells()
     {
         var emptyCells = new List<Vector2>();
@@ -81,9 +84,9 @@ public class PlayboardModel
     }
 
     /// <summary>
-    /// Spawns element on random position, depending cell properties
+    /// Spawns element on random position, depending elements properties
     /// </summary>
-    /// <param name="emittedCell">cell, that requests spawn</param>
+    /// <param name="emittedCell">element, that requests spawn</param>
     public void SpawnElement(PlayboardElementModel? emittedCell = null)
     {
         // case of cell, that don't allow generation
@@ -133,7 +136,11 @@ public class PlayboardModel
         Data[position] = new PlayboardElementModel(color, level);
     }
 
-    public PlayboardElementModel GetRandomCell()
+    /// <summary>
+    /// Returns random model element. Method have not generate empty cells
+    /// </summary>
+    /// <returns>element with random data</returns>
+    public PlayboardElementModel GetRandomElement()
     {
         PlayboardElementModel.Colors color = Helper.GetRandomEnumValue<PlayboardElementModel.Colors>();
         PlayboardElementModel.Levels level = Helper.GetRandomEnumValue<PlayboardElementModel.Levels>();
@@ -141,7 +148,7 @@ public class PlayboardModel
     }
 
     /// <summary>
-    /// Creates playboard with empty cells
+    /// Creates playboard with empty elements
     /// </summary>
     /// <param name="countOfRows">count of rows</param>
     /// <param name="countOfColumns">count of columns</param>

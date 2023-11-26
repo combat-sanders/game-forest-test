@@ -2,7 +2,14 @@
 
 public class Vector2
 {
+    /// <summary>
+    /// Horizontal position inside somebody
+    /// </summary>
     public int X { get; set; } = -1;
+    
+    /// <summary>
+    /// vertical position inside somebody
+    /// </summary>
     public int Y { get; set; } = -1;
     
     public Vector2(int x, int y)

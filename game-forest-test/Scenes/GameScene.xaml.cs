@@ -20,7 +20,7 @@ public partial class GameScene : Page
     private PlayboardModel _playboardModel;
     
     /// <summary>
-    /// Contains appearence and user actions handlers
+    /// Contains appearance and user actions handlers
     /// </summary>
     private PlayboardView _playboardView;
     
@@ -57,17 +57,24 @@ public partial class GameScene : Page
         SceneManager.LoadScene(new MainMenuScene());
     }
 
+    /// <summary>
+    /// As fact, connects model and view in scene
+    /// </summary>
+    /// <param name="model">model layer of game</param>
+    /// <param name="view"> view layer of game</param>
     private void InitHandlers(PlayboardModel model, PlayboardView view)
     {
         foreach (var item in view.Data)
         {
+            // generate element if it possible
             item.Value.MouseDoubleClick += (sender, args) =>
             {
                 var key = item.Key;
                 model.SpawnElement(model.Data[key]);
                 GameController.SyncPlayboardWithModel(model, view);
             };
-
+            
+            // pack source element position in data object and drag it into another element
             item.Value.MouseMove += (sender, args) =>
             {
                 if (args.LeftButton == MouseButtonState.Pressed)
@@ -77,11 +84,12 @@ public partial class GameScene : Page
                 }
             };
 
+            // recieve a dragged data with source postion and requests to model
             item.Value.Drop += (sender, args) =>
             {
                 dynamic data = args.Data.GetData(typeof(Vector2));
                 Vector2 source = new Vector2(data.X, data.Y);
-                model.MoveCell(source, item.Key);
+                model.MoveElement(source, item.Key);
                 GameController.SyncPlayboardWithModel(model, view);
             };
         }

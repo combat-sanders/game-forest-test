@@ -6,8 +6,14 @@ using game_forest_test.Models;
 
 namespace game_forest_test.Views;
 
+/// <summary>
+/// Contains methods to provide a correct gameplay
+/// </summary>
 public static class GameController
 {
+    /// <summary>
+    /// Bridge betweem model and view side color representations
+    /// </summary>
     private static readonly Dictionary<PlayboardElementModel.Colors, SolidColorBrush> _colorAdapter = 
         new()
         { 
@@ -16,6 +22,12 @@ public static class GameController
             { PlayboardElementModel.Colors.Green, Brushes.Green},
             { PlayboardElementModel.Colors.Blue, Brushes.Blue},
         };
+    
+    /// <summary>
+    /// Sync model and view size playboard. Need to call after all view-size methods
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="view"></param>
     public static void SyncPlayboardWithModel(PlayboardModel? model, PlayboardView? view)
     {
         if (model == null || view == null) return;
@@ -30,18 +42,25 @@ public static class GameController
             }
         }
     }
+    
+    /// <summary>
+    /// Makes initial state of game on model-side.
+    /// Fills playboard of blue first level elements in random position
+    /// </summary>
+    /// <param name="model">data storage</param>
+    /// <param name="countOfCells">count of cells to generate</param>
     public static void InitGame(PlayboardModel model, int countOfCells)
     {
-        var emptyCells = model.GetEmptyCells();
+        var emptyElementsKeys = model.GetEmptyCells();
         Random random = new Random();
 
         while (countOfCells > 0)
         {
-            int index = random.Next(0, emptyCells.Count - 1);
-            model.SpawnElement(emptyCells[index],
+            int index = random.Next(0, emptyElementsKeys.Count - 1);
+            model.SpawnElement(emptyElementsKeys[index],
                 PlayboardElementModel.Colors.Blue,
                 PlayboardElementModel.Levels.First);
-            emptyCells.Remove(emptyCells[index]);
+            emptyElementsKeys.Remove(emptyElementsKeys[index]);
             countOfCells--;
         }
     }

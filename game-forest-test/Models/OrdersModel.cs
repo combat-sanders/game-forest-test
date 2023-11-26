@@ -7,14 +7,23 @@ namespace game_forest_test.Models;
 
 public class OrdersModel
 {
+    /// <summary>
+    /// Available slots to request
+    /// </summary>
     public enum Slots
     {
         First,
         Second
     }
     
+    /// <summary>
+    /// Storage of elements and game logic
+    /// </summary>
     private PlayboardModel _model;
 
+    /// <summary>
+    /// Max count of orders in current session
+    /// </summary>
     public int MaxCount
     {
         get => _maxCount;
@@ -26,6 +35,9 @@ public class OrdersModel
     }
     private int _maxCount;
     
+    /// <summary>
+    /// Current count of orders in session
+    /// </summary>
     public int Count
     {
         get => _count;
@@ -39,16 +51,24 @@ public class OrdersModel
 
     private int _count = 1;
 
-    public Dictionary<Slots, PlayboardElementModel> Data;
+    /// <summary>
+    /// Contains data about available elements to request
+    /// </summary>
+    public Dictionary<Slots, PlayboardElementModel> Data { get; private set; }
     
     public OrdersModel(PlayboardModel model)
     {
         _model = model;
         
-        Data[Slots.First] = _model.GetRandomCell();
-        Data[Slots.Second] = _model.GetRandomCell();
+        Data[Slots.First] = _model.GetRandomElement();
+        Data[Slots.Second] = _model.GetRandomElement();
     }
 
+    /// <summary>
+    /// Make a request logic.
+    /// If method called, element in associated slot removed from playborard (if contains).
+    /// </summary>
+    /// <param name="slot"></param>
     public void RequestOrder(Slots slot)
     {
         PlayboardElementModel elementInSlot = Data[slot];

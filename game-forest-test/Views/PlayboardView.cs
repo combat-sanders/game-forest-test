@@ -13,43 +13,32 @@ namespace game_forest_test.Views;
 /// </summary>
 public class PlayboardView
 {
+    /// <summary>
+    /// Parent container of all elements. Also element anchors inside it
+    /// </summary>
     private Canvas _playboardContainer;
-    public Dictionary<Vector2, Rectangle> Anchors { get; private set; }
     
+    /// <summary>
+    /// Storage of elements representation
+    /// </summary>
     public Dictionary<Vector2, PlayboardElementView> Data { get; set; }
     
+    /// <summary>
+    /// Count of rows and columns in grid
+    /// </summary>
     public int Size { get; private set; } = 0;
     public PlayboardView(Canvas playboardContainer, int size)
     {
         _playboardContainer = playboardContainer;
         Size = size;
-        Anchors = new Dictionary<Vector2, Rectangle>();
         Data = new Dictionary<Vector2, PlayboardElementView>();
-        InitAnchors();
-        InitCells();
+        InitElements();
     }
 
-    private void InitAnchors()
-    {
-        for (int i = 0; i < Size; i++)
-        {
-            for (int j = 0; j < Size; j++)
-            {
-                Rectangle rectangle = new Rectangle();
-                rectangle.Fill = Brushes.Transparent;
-                rectangle.Stroke = Brushes.Black;
-                rectangle.StrokeThickness = 1;
-                rectangle.Width = _playboardContainer.Width / Size;
-                rectangle.Height = _playboardContainer.Height / Size;
-                _playboardContainer.Children.Add(rectangle);
-                Anchors[new Vector2(i, j)] = rectangle;
-                Canvas.SetTop(rectangle, i * rectangle.Height);
-                Canvas.SetLeft(rectangle, j * rectangle.Width);
-            }
-        }
-    }
-
-    private void InitCells()
+    /// <summary>
+    /// Initialise grid of empty elements
+    /// </summary>
+    private void InitElements()
     {
         for (int i = 0; i < Size; i++)
         {

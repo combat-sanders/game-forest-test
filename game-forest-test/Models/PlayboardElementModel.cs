@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace game_forest_test.Models;
 /// <summary>
-/// Defines Behavior of cell
+/// Defines Behavior of elements of playboard
 /// </summary>
 public class PlayboardElementModel 
 {
@@ -16,7 +16,7 @@ public class PlayboardElementModel
     }
 
     /// <summary>
-    /// States of cell
+    /// States of element
     /// </summary>
     public enum States
     {
@@ -62,7 +62,7 @@ public class PlayboardElementModel
     private States _state = States.Empty;
 
     /// <summary>
-    /// Property defines the color of the cell
+    /// Property defines the color of the element
     /// </summary>
     public Colors Color
     {
@@ -78,7 +78,7 @@ public class PlayboardElementModel
     private Colors _color = Colors.None;
 
     /// <summary>
-    /// Property defines the level of the cell
+    /// Property defines the level of the element
     /// </summary>
     public Levels Level
     {
@@ -94,13 +94,13 @@ public class PlayboardElementModel
     private Levels _level = Levels.None;
 
     /// <summary>
-    /// Max level of the cell
+    /// Max level of the element
     /// </summary>
     public static readonly Levels MaxLevel = Enum.GetValues(typeof(Levels)).Cast<Levels>().Max();
 
     /// <summary>
     /// Can element allow generation
     /// </summary>
-    /// <returns>true if element can generate cells</returns>
+    /// <returns>true if element can generate elements</returns>
     public bool AllowGeneration() => Level == MaxLevel;
 }

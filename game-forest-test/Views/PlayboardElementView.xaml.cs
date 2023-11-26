@@ -5,10 +5,13 @@ using System.Windows.Shapes;
 
 namespace game_forest_test.Views;
 
+/// <summary>
+/// Representation of playboard element
+/// </summary>
 public partial class PlayboardElementView : UserControl
 {
     /// <summary>
-    /// Fill color of cell
+    /// Fill color of element
     /// </summary>
     public Brush Color
     {
@@ -17,7 +20,7 @@ public partial class PlayboardElementView : UserControl
     }
 
     /// <summary>
-    /// Level of the cell
+    /// Level of the element
     /// </summary>
     public int Level
     {
@@ -26,7 +29,7 @@ public partial class PlayboardElementView : UserControl
     }
 
     /// <summary>
-    /// Container, that provides color of cell
+    /// Container, that provides color of element
     /// </summary>
     private Rectangle _background;
     

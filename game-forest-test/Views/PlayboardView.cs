@@ -16,7 +16,7 @@ public class PlayboardView
     private Canvas _playboardContainer;
     public Dictionary<Vector2, Rectangle> Anchors { get; private set; }
     
-    public Dictionary<Vector2, PlayboardCellView> Data { get; set; }
+    public Dictionary<Vector2, PlayboardElementView> Data { get; set; }
     
     public int Size { get; private set; } = 0;
     public PlayboardView(Canvas playboardContainer, int size)
@@ -24,7 +24,7 @@ public class PlayboardView
         _playboardContainer = playboardContainer;
         Size = size;
         Anchors = new Dictionary<Vector2, Rectangle>();
-        Data = new Dictionary<Vector2, PlayboardCellView>();
+        Data = new Dictionary<Vector2, PlayboardElementView>();
         InitAnchors();
         InitCells();
     }
@@ -56,7 +56,7 @@ public class PlayboardView
             for (int j = 0; j < Size; j++)
             {
                 Vector2 position = new Vector2(i, j);
-                Data[position] = new PlayboardCellView();
+                Data[position] = new PlayboardElementView();
                 Data[position].Width = _playboardContainer.Width / Size;
                 Data[position].Height = _playboardContainer.Height / Size;
                 _playboardContainer.Children.Add(Data[position]);

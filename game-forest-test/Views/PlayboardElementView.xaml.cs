@@ -5,7 +5,7 @@ using System.Windows.Shapes;
 
 namespace game_forest_test.Views;
 
-public partial class PlayboardCellView : UserControl
+public partial class PlayboardElementView : UserControl
 {
     /// <summary>
     /// Fill color of cell
@@ -35,7 +35,7 @@ public partial class PlayboardCellView : UserControl
     /// </summary>
     private TextBlock _text;
     
-    public PlayboardCellView(int level = 0, Brush color = null)
+    public PlayboardElementView(int level = 0, Brush color = null)
     {
         InitializeComponent();
         _background = (Rectangle)FindName("Background");

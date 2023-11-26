@@ -44,7 +44,7 @@ public partial class GameScene : Page
         InitHandlers(_playboardModel, _playboardView);
         
         // sync state between model and view
-        PlayboardController.SyncWithModel(_playboardModel, _playboardView);
+        GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public partial class GameScene : Page
             {
                 var key = item.Key;
                 model.SpawnElement(model.Data[key]);
-                PlayboardController.SyncWithModel(model, view);
+                GameController.SyncPlayboardWithModel(model, view);
             };
 
             item.Value.MouseMove += (sender, args) =>
@@ -82,7 +82,7 @@ public partial class GameScene : Page
                 dynamic data = args.Data.GetData(typeof(Vector2));
                 Vector2 source = new Vector2(data.X, data.Y);
                 model.MoveCell(source, item.Key);
-                PlayboardController.SyncWithModel(model, view);
+                GameController.SyncPlayboardWithModel(model, view);
             };
         }
     }

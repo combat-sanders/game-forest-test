@@ -6,9 +6,9 @@ namespace game_forest_test.Models;
 /// <summary>
 /// Defines Behavior of cell
 /// </summary>
-public class PlayboardModelCell 
+public class PlayboardElementModel 
 {
-    public PlayboardModelCell(Colors color = Colors.None, Levels level = Levels.None)
+    public PlayboardElementModel(Colors color = Colors.None, Levels level = Levels.None)
     {
         Color = color;
         Level = level;

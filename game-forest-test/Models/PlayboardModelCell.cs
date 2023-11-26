@@ -45,25 +45,53 @@ public class PlayboardModelCell
         Fourth = 4,
     }
 
-    public States State { get; set; } = States.Empty;
+    public States State
+    {
+        get => _state;
+        set
+        {
+            if (value == States.Empty)
+            {
+                _color = Colors.None;
+                _level = Levels.None;
+            }
+            _state = value;
+        }
+    }
+
+    private States _state = States.Empty;
 
     /// <summary>
     /// Property defines the color of the cell
     /// </summary>
     public Colors Color
     {
-        get;
-        set;
+        get => _color;
+        set
+        {
+            if (value == Colors.None) State = States.Empty;
+            State = States.Busy;
+            _color = value;
+        }
     }
-    
+
+    private Colors _color = Colors.None;
+
     /// <summary>
     /// Property defines the level of the cell
     /// </summary>
     public Levels Level
     {
-        get;
-        set;
+        get => _level;
+        set
+        {
+            if (value == Levels.None) State = States.Empty;
+            State = States.Busy;
+            _level = value;
+        }
     }
+
+    private Levels _level = Levels.None;
 
     /// <summary>
     /// Max level of the cell

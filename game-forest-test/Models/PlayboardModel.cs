@@ -27,40 +27,26 @@ public class PlayboardModel
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="sourceX">first coordinate of moving cell</param>
-    /// <param name="sourceY">second coordinate of moving cell</param>
-    /// <param name="targetX">first coordinate of target cell</param>
-    /// <param name="targetY">first coordinate of target cell</param>
+    /// <param name="source">source position</param>
+    /// <param name="target">target position</param>
     /// <returns></returns>
     public bool MoveCell(Vector2 source, Vector2 target)
     {
-        if (Helper.InRange(source.X, 0, Size - 1) ||
-            Helper.InRange(source.Y, 0, Size - 1) ||
-            Helper.InRange(target.X, 0, Size - 1) ||
-            Helper.InRange(target.Y, 0, Size - 1))
-        {
-            return false;
-        }
-        // if target cell is empty
-        if (Data[target].State == PlayboardModelCell.States.Empty)
-        {
-            // just move cell
-            Data[target] = Data[source];
-            // and make source cell empty
-            Data[source].State = PlayboardModelCell.States.Empty;
-        }
+        if (Data[source].State == PlayboardModelCell.States.Empty) return false;
+        if (Equals(source, target)) return false;
 
         // swap cells if color and level are not same or target cell have max level 
-        if (Data[target]?.Color != Data[source].Color ||
-            Data[target]?.Level != Data[source].Level ||
-            Data[target]?.Level == PlayboardModelCell.MaxLevel)
+        if (Data[target].Color != Data[source].Color ||
+            Data[target].Level != Data[source].Level ||
+            Data[target].Level == PlayboardModelCell.MaxLevel ||
+            Data[target].State == PlayboardModelCell.States.Empty)
         {
             (Data[source], Data[target]) = (Data[target], Data[source]);
         }
 
         // improve level if color and level are same
-        if (Data[target]?.Color == Data[source].Color &&
-            Data[target]?.Level == Data[source].Level &&
+        if (Data[target].Color == Data[source].Color &&
+            Data[target].Level == Data[source].Level &&
             Data[source].Level != PlayboardModelCell.MaxLevel)
         {
             // improve level on target cell
@@ -101,7 +87,7 @@ public class PlayboardModel
     public void SpawnElement(PlayboardModelCell? emittedCell = null)
     {
         // case of cell, that don't allow generation
-        if (emittedCell?.State == PlayboardModelCell.States.Empty &&
+        if (emittedCell?.State == PlayboardModelCell.States.Empty ||
             !emittedCell.AllowGeneration())
         {
             return;

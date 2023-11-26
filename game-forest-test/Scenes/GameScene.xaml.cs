@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Shapes;
 using game_forest_test.Models;
 using game_forest_test.Views;
@@ -40,6 +41,7 @@ public partial class GameScene : Page
         
         // Startup game
         GameController.InitGame(_playboardModel, 8);
+        InitHandlers(_playboardModel, _playboardView);
         
         // sync state between model and view
         PlayboardController.SyncWithModel(_playboardModel, _playboardView);
@@ -53,5 +55,35 @@ public partial class GameScene : Page
     private void OnExitButtonPressed(object sender, RoutedEventArgs e)
     {
         SceneManager.LoadScene(new MainMenuScene());
+    }
+
+    private void InitHandlers(PlayboardModel model, PlayboardView view)
+    {
+        foreach (var item in view.Data)
+        {
+            item.Value.MouseDoubleClick += (sender, args) =>
+            {
+                var key = item.Key;
+                model.SpawnElement(model.Data[key]);
+                PlayboardController.SyncWithModel(model, view);
+            };
+
+            item.Value.MouseMove += (sender, args) =>
+            {
+                if (args.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragDrop.DoDragDrop(item.Value, item.Key,
+                        DragDropEffects.Move | DragDropEffects.Copy);
+                }
+            };
+
+            item.Value.Drop += (sender, args) =>
+            {
+                dynamic data = args.Data.GetData(typeof(Vector2));
+                Vector2 source = new Vector2(data.X, data.Y);
+                model.MoveCell(source, item.Key);
+                PlayboardController.SyncWithModel(model, view);
+            };
+        }
     }
 }

@@ -20,16 +20,4 @@ public static class Helper
         int randomIndex = random.Next(enumValues.Length);
         return (T?)enumValues.GetValue(randomIndex);
     }
-
-    /// <summary>
-    /// Check if element enters in range
-    /// </summary>
-    /// <param name="target">element to compare</param>
-    /// <param name="a">first element</param>
-    /// <param name="b">second element</param>
-    /// <returns>True if element in range</returns>
-    public static bool InRange(int? target, int a, int b)
-    {
-        return target >= int.Min(a, b) && target <= int.Max(a, b);
-    }
 }

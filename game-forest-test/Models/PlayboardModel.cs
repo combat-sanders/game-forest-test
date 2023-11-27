@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Media;
 using game_forest_test.Helpers;
 
@@ -142,8 +144,18 @@ public class PlayboardModel
     /// <returns>element with random data</returns>
     public PlayboardElementModel GetRandomElement()
     {
-        PlayboardElementModel.Colors color = Helper.GetRandomEnumValue<PlayboardElementModel.Colors>();
-        PlayboardElementModel.Levels level = Helper.GetRandomEnumValue<PlayboardElementModel.Levels>();
+        List<PlayboardElementModel.Colors> colors = 
+            Enum.GetValues(typeof(PlayboardElementModel.Colors)).Cast<PlayboardElementModel.Colors>()
+            .Where(x => x != PlayboardElementModel.Colors.None).ToList();
+        List<PlayboardElementModel.Levels> levels = 
+            Enum.GetValues(typeof(PlayboardElementModel.Levels)).Cast<PlayboardElementModel.Levels>()
+                .Where(x => x != PlayboardElementModel.Levels.None).ToList();
+        
+        Random random = new Random();
+        
+        PlayboardElementModel.Colors color = colors[random.Next(0, colors.Count)];
+        PlayboardElementModel.Levels level = levels[random.Next(0, levels.Count)];
+        
         return new PlayboardElementModel(color, level);
     }
 

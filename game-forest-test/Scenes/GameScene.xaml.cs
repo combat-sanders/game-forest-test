@@ -28,23 +28,49 @@ public partial class GameScene : Page
     /// Container, that will be parent of playboard
     /// </summary>
     private Canvas _playboardParent;
+    
+    /// <summary>
+    /// Container, that will be parent of orders block
+    /// </summary>
+    private Canvas _ordersParent;
+
+    /// <summary>
+    /// Contains all game data and methods about game logic
+    /// </summary>
+    private OrdersModel _ordersModel;
+
+    /// <summary>
+    /// Contains appearence and user actions handlers of orders mechanic
+    /// </summary>
+    private OrdersView _ordersView;
     public GameScene()
     {
         InitializeComponent();
         
         // Find static xaml container
         _playboardParent = (Canvas)FindName("PlayboardContainer");
+        _ordersParent = (Canvas)FindName("OrdersContainer");
         
         // Init general actors
         _playboardModel = new PlayboardModel(8);
         _playboardView = new PlayboardView(_playboardParent, 8);
         
+        _ordersModel = new OrdersModel(_playboardModel);
+        _ordersView = new OrdersView();
+
+        /// Setup orders view
+        _ordersView.Width = _ordersParent.Width;
+        _ordersView.Height = _ordersParent.Height;
+        _ordersParent.Children.Add(_ordersView);
+        
         // Startup game
         GameController.InitGame(_playboardModel, 8);
-        InitHandlers(_playboardModel, _playboardView);
+        InitPlayboardHandlers(_playboardModel, _playboardView);
+        InitOrdersHandlers();
         
         // sync state between model and view
         GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+        GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
     }
 
     /// <summary>
@@ -62,7 +88,7 @@ public partial class GameScene : Page
     /// </summary>
     /// <param name="model">model layer of game</param>
     /// <param name="view"> view layer of game</param>
-    private void InitHandlers(PlayboardModel model, PlayboardView view)
+    private void InitPlayboardHandlers(PlayboardModel model, PlayboardView view)
     {
         foreach (var item in view.Data)
         {
@@ -93,5 +119,28 @@ public partial class GameScene : Page
                 GameController.SyncPlayboardWithModel(model, view);
             };
         }
+    }
+
+    void InitOrdersHandlers()
+    {
+        _ordersView.Data[OrdersView.Slots.First].PreviewMouseDown += (sender, args) =>
+        {
+            if (args.LeftButton == MouseButtonState.Pressed)
+            {
+                _ordersModel.RequestOrder(OrdersModel.Slots.First);
+                GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
+                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+            }
+        };
+        
+        _ordersView.Data[OrdersView.Slots.Second].PreviewMouseDown += (sender, args) =>
+        {
+            if (args.LeftButton == MouseButtonState.Pressed)
+            {
+                _ordersModel.RequestOrder(OrdersModel.Slots.Second);
+                GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
+                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+            }
+        };
     }
 }

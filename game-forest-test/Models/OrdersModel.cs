@@ -33,7 +33,7 @@ public class OrdersModel
             _maxCount = value;
         }
     }
-    private int _maxCount;
+    private int _maxCount = 1;
     
     /// <summary>
     /// Current count of orders in session
@@ -45,23 +45,27 @@ public class OrdersModel
         {
             if (value < 0) _count = 0;
             _count = value;
-            if (_count >= _maxCount) OnMaxCountAchieved.Invoke();
+            if (_count >= _maxCount) OnMaxCountAchieved?.Invoke();
         }
     }
 
-    private int _count = 1;
+    private int _count = 0;
 
     /// <summary>
     /// Contains data about available elements to request
     /// </summary>
-    public Dictionary<Slots, PlayboardElementModel> Data { get; private set; }
+    public Dictionary<Slots, PlayboardElementModel> Data { get; private set; } = new()
+    {
+        { Slots.First, new PlayboardElementModel() },
+        { Slots.Second, new PlayboardElementModel() }
+    };
     
     public OrdersModel(PlayboardModel model)
     {
         _model = model;
-        
-        Data[Slots.First] = _model.GetRandomElement();
-        Data[Slots.Second] = _model.GetRandomElement();
+
+        Data[Slots.First] = model.GetRandomElement();
+        Data[Slots.Second] = model.GetRandomElement();
     }
 
     /// <summary>
@@ -71,27 +75,32 @@ public class OrdersModel
     /// <param name="slot"></param>
     public void RequestOrder(Slots slot)
     {
+        // get element in slot
         PlayboardElementModel elementInSlot = Data[slot];
-
-        var sameElements = _model.Data.Where(
-            elementInPlayboard => elementInPlayboard.Value.Equals(elementInSlot));
-
-        sameElements = sameElements.ToDictionary(x => x.Key, x => x.Value);
         
-        if (sameElements.Any())
-        {
-            Random random = new Random();
-            var key = sameElements.ElementAt(random.Next(0, sameElements.Count() - 1)).Key;
-            _model.Data[key].State = PlayboardElementModel.States.Empty;
-        }
+        // get the list of same elements
+        List<KeyValuePair<Vector2, PlayboardElementModel>> sameElements = 
+            _model.Data.Where(x => 
+                x.Value.Color == elementInSlot.Color && x.Value.Level == elementInSlot.Level).ToList();
 
-        Count++;
-        OnOrderCompleted.Invoke(slot);
+        if (sameElements.Count > 0)
+        {
+            // get one of same elements
+            Random random = new Random();
+            Vector2 position = sameElements[random.Next(0, sameElements.Count)].Key;
+
+            // and make it empty
+            _model.Data[position].State = PlayboardElementModel.States.Empty;
+
+            Count++;
+            Data[slot] = _model.GetRandomElement();
+            OnOrderCompleted?.Invoke(slot);
+        }
     }
 
     public delegate void OrderCompleted(Slots slot);
-    public event OrderCompleted OnOrderCompleted;
+    public event OrderCompleted? OnOrderCompleted;
 
     public delegate void MaxCountAchieved();
-    public event MaxCountAchieved OnMaxCountAchieved;
+    public event MaxCountAchieved? OnMaxCountAchieved;
 }

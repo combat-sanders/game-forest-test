@@ -42,6 +42,15 @@ public static class GameController
             }
         }
     }
+
+    public static void SyncOrdersWithModel(OrdersModel model, OrdersView view)
+    {
+        view.Data[OrdersView.Slots.First].Background = _colorAdapter[model.Data[OrdersModel.Slots.First].Color];
+        view.Data[OrdersView.Slots.First].Text = Convert.ToInt32(model.Data[OrdersModel.Slots.First].Level).ToString();
+        
+        view.Data[OrdersView.Slots.Second].Background = _colorAdapter[model.Data[OrdersModel.Slots.Second].Color];
+        view.Data[OrdersView.Slots.Second].Text = Convert.ToInt32(model.Data[OrdersModel.Slots.Second].Level).ToString();
+    }
     
     /// <summary>
     /// Makes initial state of game on model-side.

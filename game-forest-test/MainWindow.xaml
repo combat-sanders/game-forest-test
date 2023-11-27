@@ -7,5 +7,5 @@
         mc:Ignorable="d"
         Title="Merge-2 Sample" Height="450" Width="800"
         ResizeMode="NoResize">
-    <Frame Name="MainFrame"></Frame>
+    <Frame Name="MainFrame" NavigationUIVisibility="Hidden" ></Frame>
 </Window>

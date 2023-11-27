@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:game_forest_test.Scenes"
+      xmlns:gameForestTest="clr-namespace:game_forest_test"
       mc:Ignorable="d"
       Title="PlayField" 
       Height="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -11,13 +12,23 @@
       Width="{Binding RelativeSource={RelativeSource FindAncestor, 
               AncestorType={x:Type Frame}},Path=ActualWidth}"
       ShowsNavigationUI="False">
+    
     <Grid>
+        <Grid.ColumnDefinitions>
+           <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+       <Canvas Grid.Column="0" Name="OrdersContainer" Width="200" Height="200" Background="Transparent">
+           
+       </Canvas>
         <Viewbox 
             Height="200"
             Width="200"
             Stretch="Fill"
             StretchDirection="Both"
-            Visibility="Visible">
+            Visibility="Visible"
+            Grid.Column="1">
             <Canvas 
                 Visibility="Visible"
                 HorizontalAlignment="Center"
@@ -33,7 +44,8 @@
                 Width="50" Height="50"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Click="OnExitButtonPressed">
+                Click="OnExitButtonPressed"
+                Grid.Column="2">
             <TextBlock
                 Height="{Binding RelativeSource={RelativeSource FindAncestor, 
               AncestorType={x:Type Button}},Path=ActualHeight}" 

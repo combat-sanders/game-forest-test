@@ -22,7 +22,8 @@
         <Viewbox Grid.Row="0" Grid.Column="0">
            <TextBlock
                Name="Text"
-               Text="0">
+               Text="0"
+               Foreground="White">
            </TextBlock>
         </Viewbox>
     </Grid>

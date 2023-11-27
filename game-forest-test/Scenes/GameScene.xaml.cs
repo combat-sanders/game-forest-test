@@ -6,6 +6,7 @@ using System.Windows.Shapes;
 using game_forest_test.Models;
 using game_forest_test.Views;
 using System.Windows.Media;
+using game_forest_test.Models.Interfaces;
 
 namespace game_forest_test.Scenes;
 
@@ -17,7 +18,7 @@ public partial class GameScene : Page
     /// <summary>
     /// Contains playbord data and game methods
     /// </summary>
-    private PlayboardModel _playboardModel;
+    private IPlayboardModel _playboardModel;
     
     /// <summary>
     /// Contains appearance and user actions handlers
@@ -42,7 +43,7 @@ public partial class GameScene : Page
     /// <summary>
     /// Contains all game data and methods about game logic
     /// </summary>
-    private OrdersModel _ordersModel;
+    private IOrdersModel _ordersModel;
 
     /// <summary>
     /// Contains appearence and user actions handlers of orders mechanic
@@ -52,7 +53,7 @@ public partial class GameScene : Page
     /// <summary>
     /// Contains all game staticstics
     /// </summary>
-    private StatisticsModel _statisticsModel;
+    private IStatisticsModel _statisticsModel;
 
     /// <summary>
     /// Visualize data from statistics model
@@ -113,7 +114,7 @@ public partial class GameScene : Page
     /// </summary>
     /// <param name="model">model layer of game</param>
     /// <param name="view"> view layer of game</param>
-    private void InitPlayboardHandlers(PlayboardModel model, PlayboardView view)
+    private void InitPlayboardHandlers(IPlayboardModel model, PlayboardView view)
     {
         foreach (var item in view.Data)
         {

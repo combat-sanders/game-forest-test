@@ -10,7 +10,7 @@ namespace game_forest_test.Models;
 /// <summary>
 /// Contains data and logic about current Playboard state
 /// </summary>
-public class PlayboardModel
+public class PlayboardModel : IPlayboardModel
 {
     /// <summary>
     /// Container, that contains data about elements.

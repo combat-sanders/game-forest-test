@@ -6,7 +6,7 @@ namespace game_forest_test.Models;
 /// <summary>
 /// Defines Behavior of elements of playboard
 /// </summary>
-public class PlayboardElementModel 
+public class PlayboardElementModel : IPlayboardElementModel
 {
     public PlayboardElementModel(Colors color = Colors.None, Levels level = Levels.None)
     {

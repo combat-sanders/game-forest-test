@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using game_forest_test.Helpers;
 using game_forest_test.Models;
+using game_forest_test.Models.Interfaces;
 
 namespace game_forest_test.Views;
 
@@ -28,9 +29,8 @@ public static class GameController
     /// </summary>
     /// <param name="model"></param>
     /// <param name="view"></param>
-    public static void SyncPlayboardWithModel(PlayboardModel? model, PlayboardView? view)
+    public static void SyncPlayboardWithModel(IPlayboardModel model, PlayboardView view)
     {
-        if (model == null || view == null) return;
         if (model.Size != view.Size) return;
 
         for (int i = 0; i < model.Size; i++)
@@ -43,7 +43,7 @@ public static class GameController
         }
     }
 
-    public static void SyncOrdersWithModel(OrdersModel model, OrdersView view)
+    public static void SyncOrdersWithModel(IOrdersModel model, OrdersView view)
     {
         view.Data[OrdersView.Slots.First].Background = _colorAdapter[model.Data[OrdersModel.Slots.First].Color];
         view.Data[OrdersView.Slots.First].Text = Convert.ToInt32(model.Data[OrdersModel.Slots.First].Level).ToString();
@@ -58,7 +58,7 @@ public static class GameController
     /// </summary>
     /// <param name="model">data storage</param>
     /// <param name="countOfCells">count of cells to generate</param>
-    public static void InitGame(PlayboardModel model, int countOfCells)
+    public static void InitGame(IPlayboardModel model, int countOfCells)
     {
         var emptyElementsKeys = model.GetEmptyCells();
         Random random = new Random();
@@ -74,7 +74,7 @@ public static class GameController
         }
     }
 
-    public static void SyncStatisticsWithModel(StatisticsModel model, StatisticsView view)
+    public static void SyncStatisticsWithModel(IStatisticsModel model, StatisticsView view)
     {
         view.Orders = model.OrdersCount;
         view.Points = model.PointsCount;

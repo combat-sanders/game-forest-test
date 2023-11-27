@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using game_forest_test.Models.Interfaces;
 
 namespace game_forest_test.Models;
 
-public class OrdersModel
+public class OrdersModel : IOrdersModel
 {
     /// <summary>
     /// Available slots to request
@@ -19,7 +20,7 @@ public class OrdersModel
     /// <summary>
     /// Storage of elements and game logic
     /// </summary>
-    private PlayboardModel _model;
+    private IPlayboardModel _model;
 
     /// <summary>
     /// Max count of orders in current session
@@ -60,7 +61,7 @@ public class OrdersModel
         { Slots.Second, new PlayboardElementModel() }
     };
     
-    public OrdersModel(PlayboardModel model)
+    public OrdersModel(IPlayboardModel model)
     {
         _model = model;
 

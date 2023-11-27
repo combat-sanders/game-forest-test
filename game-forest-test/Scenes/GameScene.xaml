@@ -55,5 +55,6 @@
                 VerticalAlignment="Center" Text="X" TextAlignment="Center" FontSize="35">
             </TextBlock>
         </Button> 
+        <Canvas Grid.Column="2" Name="StatisticsContainer" Width="200" Height="200" Background="Transparent" />
     </Grid>
 </Page>

@@ -73,4 +73,26 @@ public static class GameController
             countOfCells--;
         }
     }
+
+    public static void SyncStatisticsWithModel(StatisticsModel model, StatisticsView view)
+    {
+        view.Orders = model.OrdersCount;
+        view.Points = model.PointsCount;
+    }
+
+    public static int GetPointsByLevel(PlayboardElementModel.Levels level)
+    {
+        switch (level)
+        {
+            case PlayboardElementModel.Levels.First:
+                return 1;
+            case PlayboardElementModel.Levels.Second:
+                return 3;
+            case PlayboardElementModel.Levels.Third:
+                return 9;
+            case PlayboardElementModel.Levels.Fourth:
+                return 27;
+            default: return 0;
+        }
+    }
 }

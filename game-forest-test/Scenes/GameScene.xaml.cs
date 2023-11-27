@@ -35,6 +35,11 @@ public partial class GameScene : Page
     private Canvas _ordersParent;
 
     /// <summary>
+    /// Container, that will be parent of statistics block
+    /// </summary>
+    private Canvas _statisticsParent;
+
+    /// <summary>
     /// Contains all game data and methods about game logic
     /// </summary>
     private OrdersModel _ordersModel;
@@ -43,6 +48,16 @@ public partial class GameScene : Page
     /// Contains appearence and user actions handlers of orders mechanic
     /// </summary>
     private OrdersView _ordersView;
+    
+    /// <summary>
+    /// Contains all game staticstics
+    /// </summary>
+    private StatisticsModel _statisticsModel;
+
+    /// <summary>
+    /// Visualize data from statistics model
+    /// </summary>
+    private StatisticsView _statisticsView;
     public GameScene()
     {
         InitializeComponent();
@@ -50,18 +65,28 @@ public partial class GameScene : Page
         // Find static xaml container
         _playboardParent = (Canvas)FindName("PlayboardContainer");
         _ordersParent = (Canvas)FindName("OrdersContainer");
+        _statisticsParent = (Canvas)FindName("StatisticsContainer");
         
         // Init general actors
         _playboardModel = new PlayboardModel(8);
         _playboardView = new PlayboardView(_playboardParent, 8);
         
         _ordersModel = new OrdersModel(_playboardModel);
+        _ordersModel.MaxCount = 10;
         _ordersView = new OrdersView();
 
+        _statisticsModel = new StatisticsModel();
+        _statisticsView = new StatisticsView();
+        
         /// Setup orders view
         _ordersView.Width = _ordersParent.Width;
         _ordersView.Height = _ordersParent.Height;
         _ordersParent.Children.Add(_ordersView);
+        
+        // Setup statistics view
+        _statisticsView.Width = _statisticsParent.Width;
+        _statisticsView.Height = _statisticsParent.Height;
+        _statisticsParent.Children.Add(_statisticsView);
         
         // Startup game
         GameController.InitGame(_playboardModel, 8);
@@ -123,6 +148,7 @@ public partial class GameScene : Page
 
     void InitOrdersHandlers()
     {
+        // handle click on first slot
         _ordersView.Data[OrdersView.Slots.First].PreviewMouseDown += (sender, args) =>
         {
             if (args.LeftButton == MouseButtonState.Pressed)
@@ -133,6 +159,7 @@ public partial class GameScene : Page
             }
         };
         
+        //handle click on second slot
         _ordersView.Data[OrdersView.Slots.Second].PreviewMouseDown += (sender, args) =>
         {
             if (args.LeftButton == MouseButtonState.Pressed)
@@ -140,6 +167,27 @@ public partial class GameScene : Page
                 _ordersModel.RequestOrder(OrdersModel.Slots.Second);
                 GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
                 GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+            }
+        };
+
+        // setup statistics with orders data
+        _ordersModel.OnOrderCompleted += (slot) =>
+        {
+            _statisticsModel.OrdersCount = _ordersModel.Count;
+            _statisticsModel.PointsCount += GameController.GetPointsByLevel(_ordersModel.Data[slot].Level);
+            GameController.SyncStatisticsWithModel(_statisticsModel, _statisticsView);
+        };
+
+        // end game if orders equal max orders
+        _ordersModel.OnMaxCountAchieved += () =>
+        {
+            string messageBoxText = $"You result is: {_statisticsModel.PointsCount}";
+            string caption = "End of game";
+            
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK);
+            if (result == MessageBoxResult.OK)
+            {
+                SceneManager.LoadScene(new MainMenuScene());
             }
         };
     }

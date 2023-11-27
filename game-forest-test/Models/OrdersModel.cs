@@ -93,8 +93,8 @@ public class OrdersModel
             _model.Data[position].State = PlayboardElementModel.States.Empty;
 
             Count++;
-            Data[slot] = _model.GetRandomElement();
             OnOrderCompleted?.Invoke(slot);
+            Data[slot] = _model.GetRandomElement();
         }
     }
 

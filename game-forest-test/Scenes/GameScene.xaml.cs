@@ -16,6 +16,16 @@ namespace game_forest_test.Scenes;
 public partial class GameScene : Page
 {
     /// <summary>
+    /// Count of orders, when game ends
+    /// </summary>
+    private const int _maxOrdersCount = 10;
+    
+    /// <summary>
+    /// Count of rows and columns of playboard
+    /// </summary>
+    private const int _playboardSize = 8;
+    
+    /// <summary>
     /// Contains playbord data and game methods
     /// </summary>
     private IPlayboardModel _playboardModel;
@@ -69,11 +79,11 @@ public partial class GameScene : Page
         _statisticsParent = (Canvas)FindName("StatisticsContainer");
         
         // Init general actors
-        _playboardModel = new PlayboardModel(8);
-        _playboardView = new PlayboardView(_playboardParent, 8);
+        _playboardModel = new PlayboardModel(_playboardSize);
+        _playboardView = new PlayboardView(_playboardParent, _playboardSize);
         
         _ordersModel = new OrdersModel(_playboardModel);
-        _ordersModel.MaxCount = 10;
+        _ordersModel.MaxCount = _maxOrdersCount;
         _ordersView = new OrdersView();
 
         _statisticsModel = new StatisticsModel();

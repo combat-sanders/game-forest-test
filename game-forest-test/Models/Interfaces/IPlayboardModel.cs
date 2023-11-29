@@ -29,7 +29,7 @@ public interface IPlayboardModel
     /// <param name="source">source position of element</param>
     /// <param name="target"> target position of element</param>
     /// <returns></returns>
-    bool Swap(Vector2 source, Vector2 target);
+    bool CanSwapElements(Vector2 source, Vector2 target);
 
     /// <summary>
     /// Returns list of empty element indexes
@@ -41,7 +41,7 @@ public interface IPlayboardModel
     /// Spawns element on random position, depending elements properties
     /// </summary>
     /// <param name="emittedCell">element, that requests spawn</param>
-    void SpawnElement(PlayboardElementModel? emittedCell = null);
+    Vector2 SpawnElement(PlayboardElementModel? emittedCell = null);
 
     void SpawnElement(Vector2 position, PlayboardElementModel.Colors color, PlayboardElementModel.Levels level);
 

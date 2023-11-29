@@ -41,7 +41,7 @@ public class PlayboardModel : IPlayboardModel
         if (Equals(source, target)) return false;
 
         // swap cells if color and level are not same or target element have max level 
-        if (Swap(source, target))
+        if (CanSwapElements(source, target))
         {
             (Data[source], Data[target]) = (Data[target], Data[source]);
         }
@@ -58,7 +58,7 @@ public class PlayboardModel : IPlayboardModel
         return true;
     }
 
-    public bool Swap(Vector2 source, Vector2 target)
+    public bool CanSwapElements(Vector2 source, Vector2 target)
     {
         return Data[target].Color != Data[source].Color ||
                Data[target].Level != Data[source].Level ||
@@ -99,13 +99,13 @@ public class PlayboardModel : IPlayboardModel
     /// Spawns element on random position, depending elements properties
     /// </summary>
     /// <param name="emittedCell">element, that requests spawn</param>
-    public void SpawnElement(PlayboardElementModel? emittedCell = null)
+    public Vector2 SpawnElement(PlayboardElementModel? emittedCell = null)
     {
         // case of cell, that don't allow generation
         if (emittedCell?.State == PlayboardElementModel.States.Empty ||
             !emittedCell.AllowGeneration())
         {
-            return;
+            return null;
         }
         
         // get list of empty cells
@@ -114,7 +114,7 @@ public class PlayboardModel : IPlayboardModel
         // no spawn if board is full
         if (emptyCells.Count == 0)
         {
-            return;
+            return null;
         }
 
         Random random = new Random();
@@ -141,6 +141,8 @@ public class PlayboardModel : IPlayboardModel
         // change element to target properties (spawn, in view
         Data[cellPosition].Color = cellColor;
         Data[cellPosition].Level = PlayboardElementModel.Levels.First;
+
+        return cellPosition;
     }
 
     public void SpawnElement(Vector2 position, PlayboardElementModel.Colors color, PlayboardElementModel.Levels level)

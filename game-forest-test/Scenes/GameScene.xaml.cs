@@ -76,6 +76,11 @@ public partial class GameScene : Page
     /// Allow communication between view and model
     /// </summary>
     private PlayboardController _playboardController;
+
+    /// <summary>
+    /// Contains methods for animations on playboard elements
+    /// </summary>
+    private PlayboardAnimator _playboardAnimator;
     public GameScene()
     {
         InitializeComponent();
@@ -97,6 +102,8 @@ public partial class GameScene : Page
         _statisticsView = new StatisticsView();
 
         _playboardController = new PlayboardController();
+
+        _playboardAnimator = new PlayboardAnimator();
         
         /// Setup orders view
         _ordersView.Width = _ordersParent.Width;
@@ -140,9 +147,15 @@ public partial class GameScene : Page
             // generate element if it possible
             item.Value.MouseDoubleClick += (sender, args) =>
             {
-                var key = item.Key;
-                model.SpawnElement(model.Data[key]);
+                var source = item.Key;
+                var target = model.SpawnElement(model.Data[source]);
+                
                 _playboardController.SyncPlayboardWithModel(model, view);
+
+                if (model.Data[source].AllowGeneration())
+                {
+                    _playboardAnimator.GenerationAnimation(source, target, _playboardView, 200);
+                }
             };
             
             // pack source element position in data object and drag it into another element
@@ -161,9 +174,9 @@ public partial class GameScene : Page
                 dynamic data = args.Data.GetData(typeof(Vector2));
                 Vector2 source = new Vector2(data.X, data.Y);
 
-                if (_playboardModel.Swap(source, item.Key))
+                if (_playboardModel.CanSwapElements(source, item.Key))
                 {
-                    ElementsAnimations.SwapAnimation(source, item.Key, _playboardView, 300);
+                    _playboardAnimator.SwapAnimation(source, item.Key, _playboardView, 100);
                 }
                 model.MoveElement(source, item.Key);
                 _playboardController.SyncPlayboardWithModel(_playboardModel, _playboardView);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
 using System.Windows.Media;
 using game_forest_test.Helpers;
 using game_forest_test.Models;
@@ -39,6 +40,7 @@ public class PlayboardController
             {
                 view.Data[new Vector2(i, j)].Color = _colorAdapter[model.Data[new Vector2(i, j)].Color];
                 view.Data[new Vector2(i, j)].Level = Convert.ToInt32(model.Data[new Vector2(i, j)].Level);
+                Canvas.SetZIndex(view.Data[new Vector2(i, j)], 0);
             }
         }
     }

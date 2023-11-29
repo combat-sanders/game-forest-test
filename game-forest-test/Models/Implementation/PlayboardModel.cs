@@ -60,10 +60,12 @@ public class PlayboardModel : IPlayboardModel
 
     public bool CanSwapElements(Vector2 source, Vector2 target)
     {
-        return Data[target].Color != Data[source].Color ||
-               Data[target].Level != Data[source].Level ||
-               Data[target].Level == PlayboardElementModel.MaxLevel ||
-               Data[target].State == PlayboardElementModel.States.Empty;
+        bool sourceEmpty = Data[source].State == PlayboardElementModel.States.Empty;
+        return (Data[target].Color != Data[source].Color ||
+                Data[target].Level != Data[source].Level ||
+                Data[target].Level == PlayboardElementModel.MaxLevel ||
+                Data[target].State == PlayboardElementModel.States.Empty) &&
+               !sourceEmpty;
     }
 
     public bool Merge(Vector2 source, Vector2 target)

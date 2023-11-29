@@ -41,18 +41,13 @@ public class PlayboardModel : IPlayboardModel
         if (Equals(source, target)) return false;
 
         // swap cells if color and level are not same or target element have max level 
-        if (Data[target].Color != Data[source].Color ||
-            Data[target].Level != Data[source].Level ||
-            Data[target].Level == PlayboardElementModel.MaxLevel ||
-            Data[target].State == PlayboardElementModel.States.Empty)
+        if (Swap(source, target))
         {
             (Data[source], Data[target]) = (Data[target], Data[source]);
         }
 
         // improve level if color and level are same
-        if (Data[target].Color == Data[source].Color &&
-            Data[target].Level == Data[source].Level &&
-            Data[source].Level != PlayboardElementModel.MaxLevel)
+        if (Merge(source, target))
         {
             // improve level on target element
             Data[target].Level++;
@@ -61,6 +56,21 @@ public class PlayboardModel : IPlayboardModel
         }
         
         return true;
+    }
+
+    public bool Swap(Vector2 source, Vector2 target)
+    {
+        return Data[target].Color != Data[source].Color ||
+               Data[target].Level != Data[source].Level ||
+               Data[target].Level == PlayboardElementModel.MaxLevel ||
+               Data[target].State == PlayboardElementModel.States.Empty;
+    }
+
+    public bool Merge(Vector2 source, Vector2 target)
+    {
+        return Data[target].Color == Data[source].Color &&
+               Data[target].Level == Data[source].Level &&
+               Data[source].Level != PlayboardElementModel.MaxLevel;
     }
     
     /// <summary>

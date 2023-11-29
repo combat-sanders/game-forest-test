@@ -22,6 +22,14 @@ public interface IPlayboardModel
     /// <param name="target">target position</param>
     /// <returns></returns>
     bool MoveElement(Vector2 source, Vector2 target);
+    
+    /// <summary>
+    /// Returns true if rules allow swap cells
+    /// </summary>
+    /// <param name="source">source position of element</param>
+    /// <param name="target"> target position of element</param>
+    /// <returns></returns>
+    bool Swap(Vector2 source, Vector2 target);
 
     /// <summary>
     /// Returns list of empty element indexes

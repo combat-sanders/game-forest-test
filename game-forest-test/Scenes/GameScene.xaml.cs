@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using System.Windows.Shapes;
 using game_forest_test.Models;
 using game_forest_test.Views;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using game_forest_test.Models.Interfaces;
 
 namespace game_forest_test.Scenes;
@@ -151,8 +153,13 @@ public partial class GameScene : Page
             {
                 dynamic data = args.Data.GetData(typeof(Vector2));
                 Vector2 source = new Vector2(data.X, data.Y);
+
+                if (_playboardModel.Swap(source, item.Key))
+                {
+                    ElementsAnimations.SwapAnimation(source, item.Key, _playboardView, 300);
+                }
                 model.MoveElement(source, item.Key);
-                GameController.SyncPlayboardWithModel(model, view);
+                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
             };
         }
     }

@@ -71,6 +71,11 @@ public partial class GameScene : Page
     /// Visualize data from statistics model
     /// </summary>
     private StatisticsView _statisticsView;
+    
+    /// <summary>
+    /// Allow communication between view and model
+    /// </summary>
+    private PlayboardController _playboardController;
     public GameScene()
     {
         InitializeComponent();
@@ -90,6 +95,8 @@ public partial class GameScene : Page
 
         _statisticsModel = new StatisticsModel();
         _statisticsView = new StatisticsView();
+
+        _playboardController = new PlayboardController();
         
         /// Setup orders view
         _ordersView.Width = _ordersParent.Width;
@@ -102,13 +109,13 @@ public partial class GameScene : Page
         _statisticsParent.Children.Add(_statisticsView);
         
         // Startup game
-        GameController.InitGame(_playboardModel, 8);
+        _playboardController.InitGame(_playboardModel, 8);
         InitPlayboardHandlers(_playboardModel, _playboardView);
         InitOrdersHandlers();
         
         // sync state between model and view
-        GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
-        GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
+        _playboardController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+        _playboardController.SyncOrdersWithModel(_ordersModel, _ordersView);
     }
 
     /// <summary>
@@ -135,7 +142,7 @@ public partial class GameScene : Page
             {
                 var key = item.Key;
                 model.SpawnElement(model.Data[key]);
-                GameController.SyncPlayboardWithModel(model, view);
+                _playboardController.SyncPlayboardWithModel(model, view);
             };
             
             // pack source element position in data object and drag it into another element
@@ -159,7 +166,7 @@ public partial class GameScene : Page
                     ElementsAnimations.SwapAnimation(source, item.Key, _playboardView, 300);
                 }
                 model.MoveElement(source, item.Key);
-                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+                _playboardController.SyncPlayboardWithModel(_playboardModel, _playboardView);
             };
         }
     }
@@ -172,8 +179,8 @@ public partial class GameScene : Page
             if (args.LeftButton == MouseButtonState.Pressed)
             {
                 _ordersModel.RequestOrder(OrdersModel.Slots.First);
-                GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
-                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+                _playboardController.SyncOrdersWithModel(_ordersModel, _ordersView);
+                _playboardController.SyncPlayboardWithModel(_playboardModel, _playboardView);
             }
         };
         
@@ -183,8 +190,8 @@ public partial class GameScene : Page
             if (args.LeftButton == MouseButtonState.Pressed)
             {
                 _ordersModel.RequestOrder(OrdersModel.Slots.Second);
-                GameController.SyncOrdersWithModel(_ordersModel, _ordersView);
-                GameController.SyncPlayboardWithModel(_playboardModel, _playboardView);
+                _playboardController.SyncOrdersWithModel(_ordersModel, _ordersView);
+                _playboardController.SyncPlayboardWithModel(_playboardModel, _playboardView);
             }
         };
 
@@ -192,8 +199,8 @@ public partial class GameScene : Page
         _ordersModel.OnOrderCompleted += (slot) =>
         {
             _statisticsModel.OrdersCount = _ordersModel.Count;
-            _statisticsModel.PointsCount += GameController.GetPointsByLevel(_ordersModel.Data[slot].Level);
-            GameController.SyncStatisticsWithModel(_statisticsModel, _statisticsView);
+            _statisticsModel.PointsCount += _playboardController.GetPointsByLevel(_ordersModel.Data[slot].Level);
+            _playboardController.SyncStatisticsWithModel(_statisticsModel, _statisticsView);
         };
 
         // end game if orders equal max orders

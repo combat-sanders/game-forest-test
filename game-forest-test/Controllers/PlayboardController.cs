@@ -10,12 +10,12 @@ namespace game_forest_test.Views;
 /// <summary>
 /// Contains methods to provide a correct gameplay
 /// </summary>
-public static class GameController
+public class PlayboardController
 {
     /// <summary>
     /// Bridge betweem model and view side color representations
     /// </summary>
-    private static readonly Dictionary<PlayboardElementModel.Colors, SolidColorBrush> _colorAdapter = 
+    private readonly Dictionary<PlayboardElementModel.Colors, SolidColorBrush> _colorAdapter = 
         new()
         { 
             { PlayboardElementModel.Colors.None, Brushes.White},
@@ -29,7 +29,7 @@ public static class GameController
     /// </summary>
     /// <param name="model"></param>
     /// <param name="view"></param>
-    public static void SyncPlayboardWithModel(IPlayboardModel model, PlayboardView view)
+    public void SyncPlayboardWithModel(IPlayboardModel model, PlayboardView view)
     {
         if (model.Size != view.Size) return;
 
@@ -43,7 +43,7 @@ public static class GameController
         }
     }
 
-    public static void SyncOrdersWithModel(IOrdersModel model, OrdersView view)
+    public void SyncOrdersWithModel(IOrdersModel model, OrdersView view)
     {
         view.Data[OrdersView.Slots.First].Background = _colorAdapter[model.Data[OrdersModel.Slots.First].Color];
         view.Data[OrdersView.Slots.First].Text = Convert.ToInt32(model.Data[OrdersModel.Slots.First].Level).ToString();
@@ -58,7 +58,7 @@ public static class GameController
     /// </summary>
     /// <param name="model">data storage</param>
     /// <param name="countOfCells">count of cells to generate</param>
-    public static void InitGame(IPlayboardModel model, int countOfCells)
+    public void InitGame(IPlayboardModel model, int countOfCells)
     {
         var emptyElementsKeys = model.GetEmptyCells();
         Random random = new Random();
@@ -74,13 +74,13 @@ public static class GameController
         }
     }
 
-    public static void SyncStatisticsWithModel(IStatisticsModel model, StatisticsView view)
+    public void SyncStatisticsWithModel(IStatisticsModel model, StatisticsView view)
     {
         view.Orders = model.OrdersCount;
         view.Points = model.PointsCount;
     }
 
-    public static int GetPointsByLevel(PlayboardElementModel.Levels level)
+    public int GetPointsByLevel(PlayboardElementModel.Levels level)
     {
         switch (level)
         {
